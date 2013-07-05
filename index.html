@@ -3,7 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Bootstrap, from Twitter</title>
+    <title>Affordable Care Act Predictor</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -11,10 +11,9 @@
     <!-- Le styles -->
     <link href="css/bootstrap.css" rel="stylesheet">
     <style type="text/css">
-      body {
-        padding-top: 60px;
-        padding-bottom: 40px;
-      }
+      body { padding-top: 40px; padding-bottom: 40px; }
+	  #landingHead { background-image: url('img/slide-01.jpg'); color: #FFFFFF; }
+	  
     </style>
     <link href="css/bootstrap-responsive.css" rel="stylesheet">
 
@@ -23,73 +22,29 @@
       <script src="../assets/js/html5shiv.js"></script>
     <![endif]-->
 
-    <!-- Fav and touch icons -->
+    <!-- Fav and touch icons
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
     <link rel="shortcut icon" href="../assets/ico/favicon.png">
+  -->
 
     <!-- jQuery scrip source -->
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="js/aca.js"></script>
     <script>
-      $(document).ready(function(){
-        $("#question_1").css("visibility","hidden");
-        $("#question_2").css("visibility","hidden");
-        $("#question_3").css("visibility","hidden");
-      });
-
-	   function commaSeparateNumber(val){
-			while (/(\d+)(\d{3})/.test(val.toString())){
-				val = val.toString().replace(/(\d+)(\d{3})/, '$1'+','+'$2');
-			}
-			return val;
-		}
-	  
-    function checkAnswers(questionNum){
-        if( $("#answer_" + questionNum).val() == "" ) {
-			console.log("you need to enter an answer");
-			return false;
-        }
-
-        switch(questionNum) {
-			case 0:
-				if ($("#answer_0").val() === 0) {
-					
-				}
-				$("#answer_1").attr("max", $("#answer_0").val() );
-				
-				showNextQuestion(questionNum);
-				break;
-			case 1:
-				var familySize = ($("#answer_0").val()-1);
-				var federalPovertyLine = Math.round((11490 + 4020*familySize)*1.38);
-				federalPovertyLine = commaSeparateNumber(federalPovertyLine);
-				var maxIncome = Math.round((11490 + 4020*familySize)*4.00);
-				maxIncome = commaSeparateNumber(maxIncome);
-				
-				$("#answer_2").html(
-					'<option value="low" >less than $' + federalPovertyLine + '</option>' +
-					'<option  value="medium" >$' +federalPovertyLine + ' - $' + maxIncome + '</option>' +
-					'<option  value="high" >$' + maxIncome + ' or more</option>'
-				);
-				showNextQuestion(questionNum);
-			case 2:
-				break;
-			default:
-				showNextQuestion(questionNum);
-        }
-    }
-
-    function showNextQuestion(questionNum){
-		$("#question_" + (questionNum + 1) ).css("visibility","visible");
-        $("#submit").attr("onclick","checkAnswers(" + (questionNum+1) + ")");
-    }
-	
-	function determineQualifications(message){
-		
-
-	}
+		$(document).ready(function() {
+			//$("#submit").on("click",{num:0},checkAnswers);
+			$("#questionnaire").css("visibility", "hidden");
+			$("#question_1").css("visibility", "hidden");
+			$("#question_2").css("visibility", "hidden");
+			$("#question_3").css("visibility", "hidden");
+			$("#medicaid").css("display", "none");
+			$("#subsidy").css("display", "none");
+			$("#none").css("display", "none");
+			$("#applyNowButton").css("display", "none");
+		});
     </script>
 
   </head>
@@ -99,58 +54,116 @@
     <div class="container">
 
       <!-- Main hero unit for a primary marketing message or call to action -->
-      <div class="hero-unit">
+      <div class="hero-unit" id="landingHead">
         <h1>Affordable Care Act</h1>
-        <h2>Do you qualify for benefits?
-        <p><a href="#" class="btn btn-primary btn-large">Find Out Now</a></p>
+        <h2>Will you qualify for benefits?</h2><br>
+        <p><a class="btn btn-primary btn-large" id="findOut" onclick="showAndHideElements('#questionnaire', '#findOut')">Find Out Now</a></p>
       </div>
 
-      <!-- Main Content -->
-      <div class="row-fluid">
-        <div class="span2">
-        </div>
-        <div class="span8">
+      <!-- QUESTIONNAIRE -->
+      <div id="questionnaire">
           <div class="row-fluid" id="question_0">
-            <div class="span8">
-              <p>How many US citizens did you claim on your tax return last year?</p>
+            <div class="span7">
+              <p class="text-right">How many US citizens did you claim on your tax return last year?</p>
             </div>
-            <div class="span4">
-              <input type="number" min="0" id="answer_0" onblur="checkAnswers(0)" placeholder="Family size">
+            <div class="span5">
+              <input type="number" min="0" id="answer_0" class="text-left" placeholder="Family size">
             </div>
           </div>
           <div class="row-fluid" id="question_1">
-            <div class="span8">
-              <p>How many of them received insurance through an employer?</p>
+            <div class="span7">
+              <p class="text-right">How many of them received insurance through an employer?</p>
             </div>
-            <div class="span4">
-              <input type="number" min="0" id="answer_1" onblur="checkAnswers(1)" placeholder="Number insured">
+            <div class="span5">
+              <input type="number" min="0" id="answer_1" class="text-left" placeholder="Number insured">
             </div>
           </div>
           <div class="row-fluid" id="question_2">
-            <div class="span8">
-              <p>Your family's income level on your taxes last year:</p>
+            <div class="span7">
+              <p class="text-right">Your family's annual income on your taxes last year:</p>
             </div>
-            <div class="span4">
-              <select id="answer_2">
+            <div class="span5">
+              <select id="answer_2" class="text-left">
+				<option value="placeholder">--</option>
+                <option id="a2_low" value="low"></option>
+                <option id="a2_med" value="med"></option>
+                <option id="a2_high" value="high"></option>
               </select>
             </div>
           </div>
-          <div class="row-fluid" id="question_3">
-            <div class="span8">
-              <p>If your family received a windfall this year that would push your income above</p>
-            </div>
-            <div class="span4"></div>
-          </div>
-
-          
-          
-          
-          <p class="text-center"><a class="btn btn-primary btn-large" id="submit" href="#" onclick="checkAnswers(0)">Submit</a></p>
-       </div>
-        <div class="span4">
-        </div>
+		  <div class="row-fluid">
+			<div class="span12">
+				<p class="text-center"><a class="btn btn-primary btn-large" id="submit" href="#" onclick="checkAnswers(0)">Submit</a></p>
+			</div>
+		  </div>
       </div>
-      <div class="span2"></div>
+	  
+	<!-- RESPONSE PAGE -->
+	<div class="row-fluid" id="response-page">
+		<!-- IF USER QUALIFIES FOR MEDICAID SHOW THIS DIV -->
+		<div class="span12" id="medicaid">
+			<h2 class="text-center">You are very likely to qualify for<br>No Cost Full Medical Coverage (Medicaid).</h2>
+			<dl>
+				<dt>Who will qualify</dt>
+				<dd>US citizens of your household whose insurance is not already covered by an employer will likely qualify.</dd>
+			</dl>
+			<dl>
+				<dt>Coverage level</dt>
+				<dd>Medicaid covers full medical benefits including preventive care, emergency care, prescription medications and hospitalizations at no cost to the recipient. There are no monthly premiums, and all co-payments are under XX.</dd>
+			</dl>
+			<dl id="" class="">
+				<dt>Qualifying factors</dt>
+				<dd>Your household size is XX and your income is below AA, which is 138% of the federal poverty line for a household of NN. Those factors combined with US citizenship will likely qualify members of your household for Medicaid.</dd>
+			</dl>
+		</div>
+		
+		<!-- IF USER QUALIFIES FOR SUBSIDIZED HEALTH INSURANCE SHOW THIS DIV -->
+		<div class="span12" id="subsidy">
+			<h2 class="text-center">You are very likely to qualify for state-subsidized medical insurance.</h2>
+			<dl>
+				<dt>Who will qualify</dt>
+				<dd>US citizens of your household whose insurance is not already covered by an employer will likely qualify.</dd>
+			</dl>
+			<dl>
+				<dt>How it works</dt>
+				<dd>Washington State partially subsidizes health insurance for families whose income falls between 138% and 400% of the Federal poverty line. Insurers are not allowed to charge a copay for preventive care or reject sick children.</dd>
+			</dl>
+			<dl id="" class="">
+				<dt>Qualifying factors</dt>
+				<dd>Your household size is XX and your income is between AA (138% of the Federal poverty line) and BB (400% FPL) for a household of NN. Those factors combined with US citizenship will likely qualify uninsured members of your household for health insurance subsidies. The exact amount of your family's income will help determine subsidies available to your family.</dd>
+			</dl>
+		</div>
+		<!-- IF USER IS UNLIKELY TO QUALIFY SHOW THIS DIV -->
+		<div class="span12" id="none">
+			<h2 class="text-center">You might not receive additional benefits. Here's why.</h2>
+			<dl class="dl-horizontal">
+				<dt>Income</dt>
+				<dd>Household income must be below 400% of the Federal poverty line, which is AA for a family of XX.</dd>
+				<dt>Insurance</dt>
+				<dd>Family members who have insurance through an employer or other source do not qualify.</dd>
+				<dt>Citizenship</dt>
+				<dd>US citizenship is required to qualify for Affordable Care Act benefits.</dd>
+				<dt>Age</dt>
+				<dd>People over 65 qualify for Medicare beneifits instead of Affordable Care Act benefits.</dd>
+			</dl>
+			<dl>
+				<dt>Should I apply for subsidies anyway?</dt>
+				<dd>That depends. Special circumstances could place you into a qualifying category. Some examples are if anyone in your household has a disability, has ever been part of the foster care system, is of a Native American descent, or if your family is experiencing financial hardships that might not be obvious from your tax returns, among others. If you feel your family might qualify under special circumstances, you should definitely at least contact a State case manager and get some advice.</dd>
+			</dl>
+			<dl id="" class="">
+				<dt>How much would it cost me to opt out?</dt>
+				<dd>1% of your Modified Adjusted Gross Income on your federal tax return, or $95, whichever is greater.</dd>
+			</dl>
+		</div>
+		<div class="span12" id="applyNowButton">
+			<br><br>
+			<p class="text-center"><a class="btn btn-primary btn-large" id="apply" href="response.html" onclick="">Apply Now</a></p>
+		</div>
+		
+	</div>
+	
+	<!-- FOOTER
+	=================================================== -->
       <div class="row-fluid">
         <div class="span12">
           <hr>
@@ -165,21 +178,13 @@
 
     <!-- Le javascript
     ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-
-    <script src="../assets/js/jquery.js"></script>
+    <!-- Placed at the end of the document so the pages load faster
     <script src="../assets/js/bootstrap-transition.js"></script>
-    <script src="../assets/js/bootstrap-alert.js"></script>
-    <script src="../assets/js/bootstrap-modal.js"></script>
-    <script src="../assets/js/bootstrap-dropdown.js"></script>
-    <script src="../assets/js/bootstrap-scrollspy.js"></script>
-    <script src="../assets/js/bootstrap-tab.js"></script>
     <script src="../assets/js/bootstrap-tooltip.js"></script>
     <script src="../assets/js/bootstrap-popover.js"></script>
     <script src="../assets/js/bootstrap-button.js"></script>
-    <script src="../assets/js/bootstrap-collapse.js"></script>
-    <script src="../assets/js/bootstrap-carousel.js"></script>
-    <script src="../assets/js/bootstrap-typeahead.js"></script>
+  -->
+
 
   </body>
 </html>
