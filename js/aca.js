@@ -3,6 +3,10 @@ $("#questionnaire").css("visibility", "hidden");
 $("#question_1").css("visibility", "hidden");
 $("#question_2").css("visibility", "hidden");
 $("#question_3").css("visibility", "hidden");
+$("#medicaid").css("display", "none");
+$("#subsidy").css("display", "none");
+$("#none").css("display", "none");
+$("#applyNowButton").css("display", "none");
 
 
 /*
