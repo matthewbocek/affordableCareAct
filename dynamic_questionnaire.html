@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Affordable Care Act Predictor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+      body { padding-top: 40px; padding-bottom: 40px; }
+	  #landingHead { background-image: url('img/slide-01.jpg'); color: #FFFFFF; }
+	  
+	  .more-help {
+		font-size: 80%;
+		width: 100%;
+		
+	  }
+	  
+    </style>
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../assets/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
+    <link rel="shortcut icon" href="../assets/ico/favicon.png">
+  -->
+
+    <!-- jQuery scrip source -->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="js/aca.js"></script>
+	<script src="js/Question.js"></script>
+	<script src="js/question_list.js"></script>
+    <script>
+		$(document).ready(function() {
+			//$("#submit").on("click",{num:0},checkAnswers);
+			/*
+			$("#questionnaire").css("visibility", "hidden");
+			$("#question_1").css("visibility", "hidden");
+			$("#question_2").css("visibility", "hidden");
+			$("#question_3").css("visibility", "hidden");
+			$("#medicaid").css("display", "none");
+			$("#subsidy").css("display", "none");
+			$("#none").css("display", "none");
+			$("#applyNowButton").css("display", "none");
+			*/
+		});
+		
+		function changeQuest(id,text) {
+			$("#" + id).text(text);
+		}
+    </script>
+
+  </head>
+
+  <body>
+
+    <div class="container">
+
+      <!-- Main hero unit for a primary marketing message or call to action -->
+      <div class="hero-unit" id="landingHead">
+        <h1>Affordable Care Act</h1>
+        <h2>Will you qualify for benefits?</h2><br>
+        <p><a class="btn btn-primary btn-large" id="findOut" onclick="__AcaQuestions.countCitizens.printFirstQuestion()">Find Out Now</a></p>
+      </div>
+
+    <!-- QUESTIONNAIRE -->
+    <div id="questionnaire">
+          <div class="row-fluid" id="question_0"></div>
+	</div>
+	<!-- FOOTER
+	=================================================== -->
+      <div class="row-fluid">
+        <div class="span12">
+          <hr>
+
+          <footer>
+            <p>&copy; Company 2013</p>
+          </footer>
+        </div>
+      </div>
+
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster
+    <script src="../assets/js/bootstrap-transition.js"></script>
+    <script src="../assets/js/bootstrap-tooltip.js"></script>
+    <script src="../assets/js/bootstrap-popover.js"></script>
+    <script src="../assets/js/bootstrap-button.js"></script>
+  -->
+
+
+  </body>
+</html>

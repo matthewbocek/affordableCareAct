@@ -14,6 +14,12 @@
       body { padding-top: 40px; padding-bottom: 40px; }
 	  #landingHead { background-image: url('img/slide-01.jpg'); color: #FFFFFF; }
 	  
+	  .more-help {
+		font-size: 80%;
+		width: 100%;
+		
+	  }
+	  
     </style>
     <link href="css/bootstrap-responsive.css" rel="stylesheet">
 
@@ -33,6 +39,27 @@
     <!-- jQuery scrip source -->
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script src="js/aca.js"></script>
+<<<<<<< HEAD
+=======
+    <script>
+		$(document).ready(function() {
+			//$("#submit").on("click",{num:0},checkAnswers);
+			$("#questionnaire").css("visibility", "hidden");
+			$("#question_1").css("visibility", "hidden");
+			$("#question_2").css("visibility", "hidden");
+			$("#question_3").css("visibility", "hidden");
+			$("#medicaid").css("display", "none");
+			$("#subsidy").css("display", "none");
+			$("#none").css("display", "none");
+			$("#applyNowButton").css("display", "none");
+			
+		});
+		
+		function changeQuest(id,text) {
+			$("#" + id).text(text);
+		}
+    </script>
+>>>>>>> Expanded front end
 
   </head>
 
@@ -51,7 +78,8 @@
       <div id="questionnaire">
           <div class="row-fluid" id="question_0">
             <div class="span7">
-              <p class="text-right">How many US citizens did you claim on your tax return last year?</p>
+              <p class="text-right" id="quest1">How many US citizens did you claim on your tax return last year?</p>
+				<p class="text-right more-help"><a href="#" onclick="changeQuest('quest1','I dunno!')"> What if I'm not a citizen?</a> &#8226; <a onclick="changeQuest('quest1','How many people live in your house?')">What if I didn't file a tax return?</a></p>  
             </div>
             <div class="span5">
               <input type="number" min="0" id="answer_0" class="text-left" placeholder="Family size">

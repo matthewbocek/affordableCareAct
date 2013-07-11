@@ -1,4 +1,5 @@
 //$("#submit").on("click",{num:0},checkAnswers);
+<<<<<<< HEAD
 $("#questionnaire").css("visibility", "hidden");
 $("#question_1").css("visibility", "hidden");
 $("#question_2").css("visibility", "hidden");
@@ -7,6 +8,12 @@ $("#medicaid").css("display", "none");
 $("#subsidy").css("display", "none");
 $("#none").css("display", "none");
 $("#applyNowButton").css("display", "none");
+=======
+//$("#questionnaire").css("visibility", "visible");
+//$("#question_1").css("visibility", "hidden");
+//$("#question_2").css("visibility", "hidden");
+//$("#question_3").css("visibility", "hidden");
+>>>>>>> Expanded front end
 
 
 /*
@@ -125,4 +132,3 @@ function showNextQuestion(questionNum){
 	$("#question_" + (questionNum + 1) ).css("visibility", "visible");
 	$("#submit").off("click").attr("onclick","checkAnswers(" + (questionNum + 1) + ")");
 }
-
