@@ -1,4 +1,4 @@
-function Question(param,parent) {
+function Question(param) {
 	/* Parameter object Structure
 	parameter {
 		name
@@ -70,54 +70,24 @@ function Question(param,parent) {
 		getValue() : inserts "placeholder" or "value" tag as required.
 */
 	
-	this.name = param.name;
+	this.label = param.label;
 	
 	this.text = param.text;
-	this.helpers = param.helpers;
 	
 	this.inputType = param.inputType;
-	this.options = param.options;
-	this.placeholder = param.placeholder;
+	this.options = param.options || '';
+	this.placeholder = param.placeholder || param.text;
 	
-	this.parent = parent;
 	this.savedAnswer = null;
-	
-	this.descendents = param.descendents;
 }
 
 Question.prototype.print = function(target) {
 	var content = "";
-		content += '<div class="row-fluid" id="row_' + this.name + '">';
-			content += '<div class="span7">';
-				content += '<p class="text-right" id="question_' + this.name + '">' +  this.text + '</p>';
-				content += '<p class="text-right more-help">';
-					console.log( typeof(this.helpers) );
-					if (typeof(this.helpers) != 'undefined') {
-						for(i=0;i<this.helpers.length;i++) {
-							content += '<a href="#" onclick="">' + this.helpers[i] + '</a>';
-							if (i+1 < this.helpers.length) {
-								content += ' &#8226; ';
-							}
-						}
-					}
-				content += '</p>';
-            content += '</div>';
-            content += '<div class="span5">';
-				switch (this.inputType) {
-					case 'select':
-						content += '<select id="answer_' + this.name + '" ' + this.getValue() + '">'; //not tested
-						for(i=0;i<this.options.length;i++) {
-							content += '<option>' + this.options[i] + '</option>';
-						}						
-					break;
-				
-					case 'text':
-					case 'number':
-						content += '<input type="' + this.inputType + '" min="0" id="answer_' + this.name + '" ' + this.getValue() + ' />';
-					break;
-				}
-			content += '</div>';
-		content += '</div>';
+		content += '<div id="' + this.label + '" class="question_block ' + this.cssClass.join(' ') + '">';
+        content += '<p>' + this.text + '</p>';
+        content += '<p><input type="' + inputType + '" placeholder="' + this.placeholder + ' /></p>';
+        content += '</div>';
+    
 	target.after(content);
 	
 	this.changeBtn($("#submit"),this.name);
@@ -133,7 +103,7 @@ Question.prototype.print = function(target) {
 		}
 	}
 }
-
+/*
 Question.prototype.printFirstQuestion = function() {
 	__AcaQuestionsShown.push(this);
 
@@ -205,4 +175,4 @@ Question.prototype.getValue = function() {
 	} else {
 		return 'value="' + this.savedAnswer + '"';
 	}
-}
+   */

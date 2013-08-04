@@ -10,15 +10,20 @@
     <!-- Le styles -->
     <link href="css/bootstrap.css" rel="stylesheet">
     <style type="text/css">
-      body { padding-top: 40px; padding-bottom: 40px; }
-	  #landingHead { background-image: url('img/slide-01.jpg'); color: #FFFFFF; }
-	  
-	  .more-help {
-		font-size: 80%;
-		width: 100%;
-		
-	  }
-	  
+        body { padding-top: 40px; padding-bottom: 40px; }
+        #landingHead { background-image: url('img/slide-01.jpg'); color: #FFFFFF; }
+
+        .more-help {
+            font-size: 80%;
+            width: 100%;
+           }
+
+        .question_block { display: inline-block }
+        
+        .question_block input {width:100%}
+        
+        .newline {clear:both; margin-left:0 !important;}
+      
     </style>
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -36,27 +41,27 @@
 
     <!-- jQuery scrip source -->
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-    <script src="js/aca.js"></script>
-	<script src="js/Question.js"></script>
-	<script src="js/question_list.js"></script>
+<!--    <script src="js/aca.js"></script>
+    <script src="js/Question.js"></script>
+    <script src="js/question_list.js"></script>-->
     <script>
-		$(document).ready(function() {
-			//$("#submit").on("click",{num:0},checkAnswers);
-			/*
-			$("#questionnaire").css("visibility", "hidden");
-			$("#question_1").css("visibility", "hidden");
-			$("#question_2").css("visibility", "hidden");
-			$("#question_3").css("visibility", "hidden");
-			$("#medicaid").css("display", "none");
-			$("#subsidy").css("display", "none");
-			$("#none").css("display", "none");
-			$("#applyNowButton").css("display", "none");
-			*/
-		});
-		
-		function changeQuest(id,text) {
-			$("#" + id).text(text);
-		}
+        $(document).ready(function() {
+            //$("#submit").on("click",{num:0},checkAnswers);
+            /*
+            $("#questionnaire").css("visibility", "hidden");
+            $("#question_1").css("visibility", "hidden");
+            $("#question_2").css("visibility", "hidden");
+            $("#question_3").css("visibility", "hidden");
+            $("#medicaid").css("display", "none");
+            $("#subsidy").css("display", "none");
+            $("#none").css("display", "none");
+            $("#applyNowButton").css("display", "none");
+            */
+        });
+        
+        function changeQuest(id,text) {
+            $("#" + id).text(text);
+        }
     </script>
 
   </head>
@@ -73,11 +78,53 @@
       </div>
 
     <!-- QUESTIONNAIRE -->
-    <div id="questionnaire">
-          <div class="row-fluid" id="question_0"></div>
-	</div>
-	<!-- FOOTER
-	=================================================== -->
+    <div id="questionnaire" class="row-fluid">
+            <div id="lname" class="question_block span3 newline">
+                <p>Last Name</p>
+                <p><input type="text" /></p>
+            </div>
+        
+            <div id="mname" class="question_block span2">
+                <p>Middle Initial</p>
+                <p><input type="text" /></p>
+            </div>
+              
+            <div id="fname" class="question_block span3">
+                <p>First Name</p>
+                <p><input type="text" /></p>
+            </div>
+
+         
+            <div id="address1" class="question_block span6 newline">
+                <p>Address 1</p>
+                <p><input type="text" /></p>
+            </div>
+        
+            <div id="address2" class="question_block span6 newline">
+                <p>Address 2</p>
+                <p><input type="text" /></p>
+            </div>
+        
+            <div id="city" class="question_block span3 newline">
+                <p>City</p>
+                <p><input type="text" /></p>
+            </div>
+            
+            <div id="state" class="question_block span2 offset 1">
+                <p>State</p>
+                <p><input type="text" /></p>
+            </div>
+            
+            <div id="zip" class="question_block span2">
+                <p>Zip Code</p>
+                <p><input type="text" /></p>
+            </div>
+    </div> <!-- questionnaire -->
+    <div class="row-fluid">
+        <input class="btn-large offset3 span2" value="Next Section" type="button" id="submit" />
+    </div>
+    <!-- FOOTER
+    =================================================== -->
       <div class="row-fluid">
         <div class="span12">
           <hr>
