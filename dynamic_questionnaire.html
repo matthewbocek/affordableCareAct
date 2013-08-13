@@ -40,28 +40,49 @@
   -->
 
     <!-- jQuery scrip source -->
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-<!--    <script src="js/aca.js"></script>
+    <!--
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>-->
     <script src="js/Question.js"></script>
-    <script src="js/question_list.js"></script>-->
+    <script src="js/jquery.js"></script>
+    
     <script>
         $(document).ready(function() {
-            //$("#submit").on("click",{num:0},checkAnswers);
-            /*
-            $("#questionnaire").css("visibility", "hidden");
-            $("#question_1").css("visibility", "hidden");
-            $("#question_2").css("visibility", "hidden");
-            $("#question_3").css("visibility", "hidden");
-            $("#medicaid").css("display", "none");
-            $("#subsidy").css("display", "none");
-            $("#none").css("display", "none");
-            $("#applyNowButton").css("display", "none");
-            */
+            console.log('page loaded');
+            var questions = [];
+            var questionGroups = []
+            var rawJson;
+            var currentQuestion = 0;
+            var targetDiv = $('#questionnaire');
+            
+            var request = $.ajax({
+                url: "http://aca-app.comuf.com/affordableCareAct/js/questionList.json",
+                dataType: "json",
+            });
+
+            request.done(function(data) {
+                rawJson = data;
+                console.log(rawJson.identity[0].text + "// should be First Name");
+                
+                
+                
+                /*
+                $.each(rawJson,function(){
+                   [this.key????,this.val????,this.meta
+                   
+                   questionGroups.push( new QuestionGroup(  ) )
+                });*/
+                
+                for(var i=0;i<rawJson.identity.length;i++){
+                    questions.push(new Question( rawJson.identity[i] ));
+                }
+            });
+            
+            $('#submit').on('click',function(){
+                questions[currentQuestion].printTo(targetDiv);
+                currentQuestion = currentQuestion + 1;
+            });
+            
         });
-        
-        function changeQuest(id,text) {
-            $("#" + id).text(text);
-        }
     </script>
 
   </head>
@@ -79,46 +100,7 @@
 
     <!-- QUESTIONNAIRE -->
     <div id="questionnaire" class="row-fluid">
-            <div id="lname" class="question_block span3 newline">
-                <p>Last Name</p>
-                <p><input type="text" /></p>
-            </div>
         
-            <div id="mname" class="question_block span2">
-                <p>Middle Initial</p>
-                <p><input type="text" /></p>
-            </div>
-              
-            <div id="fname" class="question_block span3">
-                <p>First Name</p>
-                <p><input type="text" /></p>
-            </div>
-
-         
-            <div id="address1" class="question_block span6 newline">
-                <p>Address 1</p>
-                <p><input type="text" /></p>
-            </div>
-        
-            <div id="address2" class="question_block span6 newline">
-                <p>Address 2</p>
-                <p><input type="text" /></p>
-            </div>
-        
-            <div id="city" class="question_block span3 newline">
-                <p>City</p>
-                <p><input type="text" /></p>
-            </div>
-            
-            <div id="state" class="question_block span2 offset 1">
-                <p>State</p>
-                <p><input type="text" /></p>
-            </div>
-            
-            <div id="zip" class="question_block span2">
-                <p>Zip Code</p>
-                <p><input type="text" /></p>
-            </div>
     </div> <!-- questionnaire -->
     <div class="row-fluid">
         <input class="btn-large offset3 span2" value="Next Section" type="button" id="submit" />
