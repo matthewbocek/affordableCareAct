@@ -1,108 +1,61 @@
 function Question(param) {
-	/* Parameter object Structure
-	parameter {
-		name
-		text
-		helpers {
-			helper 1,
-			helper 2
-		}
-		inputType
-		placeholder
-		options {
-			option 1,
-			option 2,
-			option 3
-		}
-		descendents {
-			answer 1 : descendent 1,
-			answer 2 : descendent 1,
-			answer 3 : descendent 2,
-			answer 4 : descendent 3
-		}
-		required {
-			requirement 1,
-			requirement 2
-		}
-	}
-	*/
-	/* Question API
-		name : returns the question's name, also its index in __AcaQuestions array
-		text : returns the questions's default text
-		helpers { : returns object containing helper links. Currently no functionality.
-			helper 1,
-			helper 2
-		}
-		inputType : returns a string describing the answer's html object. usually an <input> type but also "select" for <select> or others.
-		placeholder : returns text you want to show before any answer is provided
-		options { : returns an object containing options for <select>, radio buttons, check boxes, etc.
-			option 1,
-			option 2,
-			option 3
-		}
-		descendents { : returns descendents in an object structure like: 
-			answer 1 : descendent 1,
-			answer 2 : descendent 1,
-			answer 3 : descendent 2,
-			"*" : default descendent 
-		}
-		
-		required { : returns the questions required for this question to make sense.
-			requirement 1,
-			requirement 2
-		}
-		
-		savedAnswer: returns the last answer to a question, even if it is not valid or the question is deleted
-		
-		question : returns html <p> object containing the question text
-		answer : returns html (usually <input>) object containing the answer
-		row : returns html <div> object containing the entire question/answer set
-	
-	
-	METHODS:
-		print(target) : prints the question/answer set BELOW the target.
-		printFirstQuestion() : prints the question to the beginning of #questionnaire and adds a "submit" button
-		nextQuestion() : uses .descendents to look up the next question
-		keys(obj) : returns an a array of key values for an object in the form obj = {key1 : val1}
-		onAnswer() : default behavior for answering a question: check for validity, check position in survey, advance to next question.
-		IsValid() : checks validity of answers
-		IsLast() : checks position in __AcaQuestionsShown array
-		getValue() : inserts "placeholder" or "value" tag as required.
-*/
-	
 	this.label = param.label;
 	
 	this.text = param.text;
 	
 	this.inputType = param.inputType;
-	this.options = param.options || '';
+	this.answerOptions = [param.answerOptions] || '';
 	this.placeholder = param.placeholder || param.text;
+    this.cssClass = [param.cssClass] || [];
 	
 	this.savedAnswer = null;
 }
 
-Question.prototype.print = function(target) {
+Question.prototype.printTo = function(target) {
 	var content = "";
 		content += '<div id="' + this.label + '" class="question_block ' + this.cssClass.join(' ') + '">';
         content += '<p>' + this.text + '</p>';
-        content += '<p><input type="' + inputType + '" placeholder="' + this.placeholder + ' /></p>';
+        content += '<p>' + this.getInputElement() + '</p>';
         content += '</div>';
-    
-	target.after(content);
-	
-	this.changeBtn($("#submit"),this.name);
-	
-	this.question = $("#question_" + this.name);
-	this.answer = $("#answer_" + this.name);
-	this.row = $("#row_" + this.name);
-	
-	if (this.attributes != "undefined") {
-		var keys = this.keys(this.attributes);
-		for(k in keys) {
-			this.answer.attr(k,this.attributes[k]);
-		}
-	}
+	target.append(content);
 }
+
+Question.prototype.print = function() {
+	var content = "";
+		content += '<div id="' + this.label + '" class="question_block ' + this.cssClass.join(' ') + '">';
+        content += '<p>' + this.text + '</p>';
+        content += '<p>' + this.getInputElement() + '</p>';
+        content += '</div>';
+    return content;
+}
+
+Question.prototype.getInputElement = function() {
+    var content = '';
+    switch(this.inputType) {      
+        case 'select':
+            content += '<select name="' + this.label + '">';
+            for(var option in this.answerOptions) {
+                content += '<option value="' + this.option + '">' + this.option + '</option>';     
+            }
+            content += '</select>';
+            break;
+        
+        case 'radio':
+        case 'checkbox':
+            for(var option in this.answerOptions) {
+                content += '<p><input type="' + this.inputType + '" name="' + this.label + '" value="' + this.option + '" /></p>';
+            }
+            break;
+        
+        case 'text':
+        default:
+            content += '<input type="' + this.inputType + '" placeholder="' + this.placeholder + '" name="' + this.label + '" />';
+            break;
+    }
+    return content;
+}
+
+
 /*
 Question.prototype.printFirstQuestion = function() {
 	__AcaQuestionsShown.push(this);
