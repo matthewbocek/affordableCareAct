@@ -40,17 +40,14 @@
   -->
 
     <!-- jQuery scrip source -->
-    <!--
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>-->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script src="js/Question.js"></script>
-    <script src="js/jquery.js"></script>
+    <script src="js/QuestionGroup.js"></script>
     
     <script>
         $(document).ready(function() {
-            console.log('page loaded');
             var questions = [];
-            var questionGroups = []
-            var rawJson;
+            var questionGroups = [];
             var currentQuestion = 0;
             var targetDiv = $('#questionnaire');
             
@@ -60,26 +57,28 @@
             });
 
             request.done(function(data) {
-                rawJson = data;
-                console.log(rawJson.identity[0].text + "// should be First Name");
+                $.each(data,function(key,value){
+                    var param = {};
+                    param.label = key;
+                    param.questions = value;
+                    questionGroups.push(new QuestionGroup( param ));
+                });
                 
-                
-                
-                /*
-                $.each(rawJson,function(){
-                   [this.key????,this.val????,this.meta
-                   
-                   questionGroups.push( new QuestionGroup(  ) )
-                });*/
-                
-                for(var i=0;i<rawJson.identity.length;i++){
-                    questions.push(new Question( rawJson.identity[i] ));
-                }
+                console.log(questionGroups);
+                questionGroups[0].printTo(targetDiv);
+            
             });
             
+            
+            
+            
             $('#submit').on('click',function(){
-                questions[currentQuestion].printTo(targetDiv);
-                currentQuestion = currentQuestion + 1;
+                questionGroups[1].printTo(targetDiv); //temporary
+                
+                $('#submit').on('click',function(){
+                    //add code for another json request
+                    console.log('making another json request (not really)');
+                });
             });
             
         });
@@ -101,7 +100,7 @@
     <!-- QUESTIONNAIRE -->
     <div id="questionnaire" class="row-fluid">
         
-    </div> <!-- questionnaire -->
+    </div> <!-- SUBMIT -->
     <div class="row-fluid">
         <input class="btn-large offset3 span2" value="Next Section" type="button" id="submit" />
     </div>
