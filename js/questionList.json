@@ -38,7 +38,7 @@
       "text" : "Client ID Number (if known)",
       "dataType": "string",
       "inputType" : "text",
-      "cssClass" : "new-line span3"
+      "cssClass" : "span3 new-line"
     },{
       "label" : "id0060",
       "text" : "Street address where you live",
@@ -183,7 +183,7 @@
       "cssClass" : ""
     },{
       "label" : "hm0100",
-      "text" : "Check if US Citezen",
+      "text" : "Check if US Citizen",
       "dataType": "boolean",
       "inputType" : "checkbox",
       "validate" : "",
