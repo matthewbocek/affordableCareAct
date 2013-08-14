@@ -1,28 +1,25 @@
-function Question(param) {
-	this.label = param.label;
+function Question(param) {    
+    this.label = param.label;
 	
 	this.text = param.text;
 	
 	this.inputType = param.inputType;
-	this.answerOptions = [param.answerOptions] || '';
+	this.answerOptions = param.answerOptions || [];
 	this.placeholder = param.placeholder || param.text;
-    this.cssClass = [param.cssClass] || [];
+    this.cssClass = param.cssClass || [];
 	
 	this.savedAnswer = null;
 }
 
 Question.prototype.printTo = function(target) {
-	var content = "";
-		content += '<div id="' + this.label + '" class="question_block ' + this.cssClass.join(' ') + '">';
-        content += '<p>' + this.text + '</p>';
-        content += '<p>' + this.getInputElement() + '</p>';
-        content += '</div>';
-	target.append(content);
+	target.append(this.print());
 }
 
 Question.prototype.print = function() {
 	var content = "";
-		content += '<div id="' + this.label + '" class="question_block ' + this.cssClass.join(' ') + '">';
+		console.log(this);
+        console.log(this.cssClass);
+        content += '<div id="' + this.label + '" class="question_block ' + this.cssClass + '">';
         content += '<p>' + this.text + '</p>';
         content += '<p>' + this.getInputElement() + '</p>';
         content += '</div>';
@@ -34,9 +31,9 @@ Question.prototype.getInputElement = function() {
     switch(this.inputType) {      
         case 'select':
             content += '<select name="' + this.label + '">';
-            for(var option in this.answerOptions) {
-                content += '<option value="' + this.option + '">' + this.option + '</option>';     
-            }
+            $.each(this.answerOptions,function(){
+                content += '<option value="' + this + '">' + this + '</option>';   
+            });
             content += '</select>';
             break;
         
