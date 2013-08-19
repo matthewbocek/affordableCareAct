@@ -36,3 +36,13 @@ QuestionGroup.prototype.print = function(){
     content += '</div>';
     return content;
 }
+
+QuestionGroup.prototype.prepareReport(){
+    var report;
+    $.each(this.questions,function(){
+            this.saveAnswer();
+            report[this.label] = this.savedAnswer;
+    });
+    console.log(report);
+    return report;
+}

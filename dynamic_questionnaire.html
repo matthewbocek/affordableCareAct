@@ -89,12 +89,12 @@
     <script src="js/QuestionGroup.js"></script>
     
     <script>
-        var questions,questionGroups,currentGroup,targetDiv,targetUrl,report;
+        var questions,questionGroups,currentGroup,targetDiv,targetUrl,finalReport;
         
         var test = true;
         
         $(document).ready(function() {
-            report = {};
+            finalReport = {};
             questions = [];
             questionGroups = [];
             currentGroup = 0; //stores the index of this group in questionGroups
@@ -181,15 +181,14 @@
         
         function nextQuestionGroup(){            
             questionGroups[currentGroup].htmlRow.slideUp();
+            questionGroups[currentGroup].prepareReport();
             if(typeof questionGroups[currentGroup+1] != 'undefined'){
-                prepareReport();
                 questionGroups[currentGroup].htmlRow.remove();
                 currentGroup = currentGroup + 1;
                 questionGroups[currentGroup].printTo(targetDiv);
             } else {
                 if (test){
                     //make a new ajax request
-                    prepareReport();
                     ajaxRequest(targetUrl,false);
                     test = false;
                     nextQuestionGroup();
@@ -206,18 +205,6 @@
             } else {
                 console.log('Cannot go back');
             }
-        }
-        
-        function prepareReport(){
-            //$.each(questionGroups,function(){
-                //$.each(this.questions,function(){
-                $.each(questionGroups[currentGroup].questions,function(){
-                    this.saveAnswer();
-                    report[this.label] = this.savedAnswer;
-                    console.log('saving ' + this.label)
-                });
-            //});
-            console.log(report);
         }
         
         //for preliminary questions:

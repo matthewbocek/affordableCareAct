@@ -19,7 +19,7 @@ Question.prototype.highlightRequired = function(arg) {
 }
 
 Question.prototype.setHtmlInputs = function() {
-    this.htmlInputs = $('#' + this.label + '>.inputblock' ).children();
+    this.htmlInputs = $('#' + this.label + '>.input-block' ).children();
 }
 
 Question.prototype.checkHelperFunction = function() {
@@ -37,12 +37,8 @@ Question.prototype.saveAnswer = function() {
         case 'select':
             //TODO
         break;
-        default:
-            console.log("------ " + this.label + " ------");
-            console.log(this.htmlInputs);
-            console.log(this.htmlInputs.val());
+        default:        
             this.savedAnswer = this.htmlInputs.val();
-            console.log(this.savedAnswer);
     }
 }
 
