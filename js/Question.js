@@ -6,9 +6,44 @@ function Question(param) {
 	this.inputType = param.inputType;
 	this.answerOptions = param.answerOptions || [];
 	this.placeholder = param.placeholder || param.text;
-    this.cssClass = param.cssClass || [];
+    this.cssClass = param.cssClass || '';
 	
+    this.htmlInputs = null;
 	this.savedAnswer = null;
+}
+
+Question.prototype.highlightRequired = function(arg) {
+    var message = arg || 'This is a required field. You may not leave it blank.';
+    this.htmlInputs.cssClass('required');
+    $('#' + this.label + '>.text-block').append(message);
+}
+
+Question.prototype.setHtmlInputs = function() {
+    this.htmlInputs = $('#' + this.label + '>.inputblock' ).children();
+}
+
+Question.prototype.checkHelperFunction = function() {
+    if (this.helperFunction != null) {
+        this.helperFunction();
+    }
+}
+
+Question.prototype.saveAnswer = function() {
+    switch(this.inputType){
+        case 'radio':
+        case 'checkbox':
+            //TODO
+        break;
+        case 'select':
+            //TODO
+        break;
+        default:
+            console.log("------ " + this.label + " ------");
+            console.log(this.htmlInputs);
+            console.log(this.htmlInputs.val());
+            this.savedAnswer = this.htmlInputs.val();
+            console.log(this.savedAnswer);
+    }
 }
 
 Question.prototype.printTo = function(target) {
@@ -16,17 +51,15 @@ Question.prototype.printTo = function(target) {
 }
 
 Question.prototype.print = function() {
-	var content = "";
-		console.log(this);
-        console.log(this.cssClass);
-        content += '<div id="' + this.label + '" class="question_block ' + this.cssClass + '">';
-        content += '<p>' + this.text + '</p>';
-        content += '<p>' + this.getInputElement() + '</p>';
+    var content = "";
+        content += '<div id="' + this.label + '" class="question-block ' + this.cssClass + '">';
+        content += '<p class="text-block">' + this.text + '</p>';
+        content += '<p class="input-block">' + this.makeInputElement() + '</p>';
         content += '</div>';
     return content;
 }
 
-Question.prototype.getInputElement = function() {
+Question.prototype.makeInputElement = function() {
     var content = '';
     switch(this.inputType) {      
         case 'select':

@@ -1,0 +1,26 @@
+{
+    "householdSize" : [
+        {
+            "label" : "pre0010",
+            "text" : "How many people live in your household?",
+            "dataType" : "int",
+            "inputType" : "number",
+            "cssClass" : "span6 new-line"
+        },{
+            "label" : "pre0020",
+            "text" : "How many of them already have insurance from an employer?",
+            "dataType" : "int",
+            "inputType" : "number",
+            "cssClass" : "span6 new-line"
+        }
+    ],"familyIncome" : [
+        {
+            "label" : "pre0030",
+            "text" : "What is your total household income?",
+            "dataType" : "string",
+            "inputType" : "select",
+            "cssClass" : "span6 new-line",
+            "helperFunction" : "makeIncomeLevels"
+        }
+    ]
+}

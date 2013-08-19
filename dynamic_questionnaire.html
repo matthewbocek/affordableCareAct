@@ -18,11 +18,13 @@
             width: 100%;
            }
 
-        .question_block { display: inline-block }
+        .question-block { display: inline-block }
         
-        .question_block input {width:100%}
+        .question-block input {width:100%}
         
-        .newline {clear:both; margin-left:0 !important;}
+        .question-block.new-line {clear:both; margin-left:0 !important;}
+        
+        
       
     </style>
 
@@ -38,52 +40,6 @@
     <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
     <link rel="shortcut icon" href="../assets/ico/favicon.png">
   -->
-
-    <!-- jQuery scrip source -->
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-    <script src="js/Question.js"></script>
-    <script src="js/QuestionGroup.js"></script>
-    
-    <script>
-        $(document).ready(function() {
-            var questions = [];
-            var questionGroups = [];
-            var currentQuestion = 0;
-            var targetDiv = $('#questionnaire');
-            
-            var request = $.ajax({
-                url: "http://aca-app.comuf.com/affordableCareAct/js/questionList.json",
-                dataType: "json",
-            });
-
-            request.done(function(data) {
-                $.each(data,function(key,value){
-                    var param = {};
-                    param.label = key;
-                    param.questions = value;
-                    questionGroups.push(new QuestionGroup( param ));
-                });
-                
-                console.log(questionGroups);
-                questionGroups[0].printTo(targetDiv);
-            
-            });
-            
-            
-            
-            
-            $('#submit').on('click',function(){
-                questionGroups[1].printTo(targetDiv); //temporary
-                
-                $('#submit').on('click',function(){
-                    //add code for another json request
-                    console.log('making another json request (not really)');
-                });
-            });
-            
-        });
-    </script>
-
   </head>
 
   <body>
@@ -94,15 +50,16 @@
       <div class="hero-unit" id="landingHead">
         <h1>Affordable Care Act</h1>
         <h2>Will you qualify for benefits?</h2><br>
-        <p><a class="btn btn-primary btn-large" id="findOut" onclick="__AcaQuestions.countCitizens.printFirstQuestion()">Find Out Now</a></p>
+        <p><a class="btn btn-primary btn-large" id="findOut" onclick="">Find Out Now</a></p>
       </div>
 
     <!-- QUESTIONNAIRE -->
     <div id="questionnaire" class="row-fluid">
         
-    </div> <!-- SUBMIT -->
+    </div> <!-- Buttons -->
     <div class="row-fluid">
-        <input class="btn-large offset3 span2" value="Next Section" type="button" id="submit" />
+        <input class="btn-large span2" value="Go Back" type="button" id="btnBack" />
+        <input class="btn-large offset span2" value="Next Section" type="button" id="btnSubmit" />
     </div>
     <!-- FOOTER
     =================================================== -->
@@ -126,7 +83,155 @@
     <script src="../assets/js/bootstrap-popover.js"></script>
     <script src="../assets/js/bootstrap-button.js"></script>
   -->
-
+    <!-- jQuery scrip source -->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="js/Question.js"></script>
+    <script src="js/QuestionGroup.js"></script>
+    
+    <script>
+        var questions,questionGroups,currentGroup,targetDiv,targetUrl,report;
+        
+        var test = true;
+        
+        $(document).ready(function() {
+            report = {};
+            questions = [];
+            questionGroups = [];
+            currentGroup = 0; //stores the index of this group in questionGroups
+            //to access use questionGroups[]
+            targetDiv = $('#questionnaire');
+            targetUrl = "http://aca-app.comuf.com/affordableCareAct/js/questionList.json"
+            targetUrl2 = "http://aca-app.comuf.com/affordableCareAct/js/preliminaryQuestions.json"
+            
+            ajaxRequest(targetUrl2,true,false);
+            //ajaxRequest(targetUrl,false);
+            
+            $('#btnSubmit').on('click',nextQuestionGroup);
+            $('#btnBack').on('click',previousQuestionGroup);
+            
+            $('input').blur(function(e){
+                console.log('on Blur');
+                var question = reverselookup(this.attr('name'));
+                if ( question.isValid( this.val() ) ) {
+                    question.savedAnswer = this.val();
+                } else {
+                    //do nothing
+                    //required labels only show up when they hit submit
+                }
+            }); 
+        });
+        
+        function ajaxRequest(targetUrl,printNow,advance){
+             var request = $.ajax({
+                url: targetUrl,
+                dataType: "json",
+                printNow : printNow,
+                advance : advance
+            });
+            
+            request.done(function(data,success) {
+                $.each(data,function(key,value){
+                    var param = {};
+                    param.label = key;
+                    param.questions = value;
+                    questionGroups.push(new QuestionGroup( param ));
+                });
+                
+                if(printNow){
+                    questionGroups[currentGroup].printTo(targetDiv);
+                }
+                
+                if(advance){
+                    currentGroup += 1;
+                    questionGroups[currentGroup].printTo(targetDiv);
+                }
+            });
+            return true;
+        }
+        
+        function reverseLookup(name){
+            $.each(questionGroups,function(){
+                $.each(this.question,function(){
+                    if(this.label === name){
+                        return this;    
+                    }
+                });
+            });
+        }
+        
+        function reverseGroupLookup(name){
+            $.each(questionGroups,function(){
+                if(this.label === name){
+                    return this;    
+                }
+            });
+        }
+        
+        function checkQuestionGroup(){
+            var result = true;
+            $.each(questionGroups[currentGroup].questions,function(){
+                if (!this.isValid){
+                    result = false;
+                }
+            });
+            if (result === true){
+                nextQuestionGroup();
+            }
+        }
+        
+        function nextQuestionGroup(){            
+            questionGroups[currentGroup].htmlRow.slideUp();
+            if(typeof questionGroups[currentGroup+1] != 'undefined'){
+                prepareReport();
+                questionGroups[currentGroup].htmlRow.remove();
+                currentGroup = currentGroup + 1;
+                questionGroups[currentGroup].printTo(targetDiv);
+            } else {
+                if (test){
+                    //make a new ajax request
+                    prepareReport();
+                    ajaxRequest(targetUrl,false);
+                    test = false;
+                    nextQuestionGroup();
+                }
+            }
+        }
+        
+        function previousQuestionGroup(){
+            questionGroups[currentGroup].htmlRow.remove();
+            if(typeof questionGroups[currentGroup-1] != 'undefined'){
+                questionGroups[currentGroup].htmlRow.remove();
+                currentGroup = currentGroup - 1;
+                questionGroups[currentGroup].printTo(targetDiv);
+            } else {
+                console.log('Cannot go back');
+            }
+        }
+        
+        function prepareReport(){
+            //$.each(questionGroups,function(){
+                //$.each(this.questions,function(){
+                $.each(questionGroups[currentGroup].questions,function(){
+                    this.saveAnswer();
+                    report[this.label] = this.savedAnswer;
+                    console.log('saving ' + this.label)
+                });
+            //});
+            console.log(report);
+        }
+        
+        //for preliminary questions:
+        function makeIncomeLevels(){
+            var familySize,federalPovertyLine,minIncome,maxIncome;
+            familySize = reverseLookup('pre0010').savedAnswer;
+            federalPovertyLine = ((familySize - 1) * 4020 + 11490);
+            minIncome = Math.round(federalPovertyLine * 1.38,0);
+            maxIncome = Math.round(federalPovertyLine * 4.00,0);
+            $('#question_block_pre0010').children('select').html('<option>Below $' + minIncome + '</option>' + '<option>Between $' + minIncome + ' and $' + maxIncome + '</option>' + '<option>Over $' + maxIncome + '</option>');
+        }
+    </script>
+    
+    
 
   </body>
 </html>
