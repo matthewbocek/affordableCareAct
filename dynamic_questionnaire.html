@@ -24,7 +24,9 @@
         
         .question-block.new-line {clear:both; margin-left:0 !important;}
         
-        
+        .perPersonGroup { display: table; }
+        .perPersonGroup>div { display: table-row; }
+        .perPersonGroup>div>div { display: table-cell; }
       
     </style>
 
@@ -134,7 +136,10 @@
                     var param = {};
                     param.label = key;
                     param.questions = value;
-                    questionGroups.push(new QuestionGroup( param ));
+                    if (param.perPerson != true)
+                        questionGroups.push(new QuestionGroup( param ));
+                    else
+                        questionGroups.push(new PerPersonQuestionGroup( param ));
                 });
                 
                 if(printNow){
@@ -181,7 +186,7 @@
         
         function nextQuestionGroup(){            
             questionGroups[currentGroup].htmlRow.slideUp();
-            questionGroups[currentGroup].prepareReport();
+            questionGroups[currentGroup].prepareReport(); //TODO: restucture functions so that this doesn't happen twice when an AJAX call is made.
             if(typeof questionGroups[currentGroup+1] != 'undefined'){
                 questionGroups[currentGroup].htmlRow.remove();
                 currentGroup = currentGroup + 1;

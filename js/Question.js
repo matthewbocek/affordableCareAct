@@ -31,12 +31,14 @@ Question.prototype.checkHelperFunction = function() {
 Question.prototype.saveAnswer = function() {
     switch(this.inputType){
         case 'radio':
+            this.savedAnswer = this.htmlInputs.filter('input:checkbox:checked').val();
+            break;
         case 'checkbox':
-            //TODO
-        break;
+            this.savedAnswer = this.htmlInputs.filter('input:radio:checked').val();
+            break;
         case 'select':
-            //TODO
-        break;
+            this.savedAnswer = this.htmlInputs.filter('option:selected').val();
+            break;
         default:        
             this.savedAnswer = this.htmlInputs.val();
     }

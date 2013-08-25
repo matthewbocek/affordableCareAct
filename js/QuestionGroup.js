@@ -4,6 +4,9 @@ function QuestionGroup(param){
     this.questions = [];
     this.cssClass = param.cssClass || '';
     
+    this.animateIn = param.animateIn || 'slideDown';
+    this.animateOut = param.animateIn || 'slideUp';
+    
     this.htmlRow;
     
     for(var i=0;i<param.questions.length;i++){
@@ -37,8 +40,8 @@ QuestionGroup.prototype.print = function(){
     return content;
 }
 
-QuestionGroup.prototype.prepareReport(){
-    var report;
+QuestionGroup.prototype.prepareReport = function(){
+    var report = [];
     $.each(this.questions,function(){
             this.saveAnswer();
             report[this.label] = this.savedAnswer;

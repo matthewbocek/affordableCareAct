@@ -28,8 +28,9 @@
       "inputType" : "select",
       "cssClass" : "span2",
       "answerOptions" : [
+        " ",
         "Sr",
-        "jr",
+        "Jr",
         "III",
         "IV"
       ]
@@ -140,8 +141,9 @@
       "inputType" : "select",
       "cssClass" : "",
       "answerOptions" : [
+        " ",
         "Sr",
-        "jr",
+        "Jr",
         "III",
         "IV"
       ]
@@ -149,9 +151,15 @@
       "label" : "hm0050",
       "text" : "Sex M or F",
       "dataType": "string",
-      "inputType" : "text",
+      "inputType" : "radio",
       "validate" : "^[A-Za-z]+$",
       "cssClass" : ""
+       "answerOptions" : [
+        "Male",
+        "Female",
+        "Other",
+        "I prefer not to say"
+      ]
     },{
       "label" : "hm0060",
       "text" : "How is this person related to you?",
@@ -164,16 +172,19 @@
       "label" : "hm0070",
       "text" : "Date of Birth",
       "dataType": "string",
-      "inputType" : "text",
+      "inputType" : "calendar",
       "validate" : "",
       "cssClass" : ""
     },{
       "label" : "hm0080",
       "text" : "Check if you want benefits for this person",
       "dataType": "boolean",
-      "inputType" : "text",
+      "inputType" : "checkbox",
       "validate" : "^[A-Za-z]+$",
       "cssClass" : ""
+      "answerOptions" : [
+        "I want benefits for this person"
+      ]
     },{
       "label" : "hm0090",
       "text" : "Social Security Number",
@@ -190,21 +201,14 @@
       "cssClass" : ""
     },{
       "label" : "hm0110",
-      "text" : "",
-      "dataType": "string",
-      "inputType" : "text",
-      "validate" : "^[A-Za-z]+$",
-      "cssClass" : ""
-    },{
-      "label" : "hm0120",
       "text" : "Race",
       "dataType": "string",
       "inputType" : "text",
       "validate" : "^[A-Za-z]+$",
       "cssClass" : ""
     },{
-      "label" : "hm0130",
-      "text" : "Tribe Name (\"for American Indians and Alaska Navites\")",
+      "label" : "hm0120",
+      "text" : "Tribe Name (\"for American Indians and Alaska Natives\")",
       "dataType": "string",
       "inputType" : "text",
       "validate" : "^[A-Za-z]+$",
