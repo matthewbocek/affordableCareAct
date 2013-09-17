@@ -103,14 +103,15 @@
             //to access use questionGroups[]
             targetDiv = $('#questionnaire');
             targetUrl = "http://aca-app.comuf.com/affordableCareAct/js/questionList.json"
-            targetUrl2 = "http://aca-app.comuf.com/affordableCareAct/js/preliminaryQuestions.json"
+            
+            targetUrl2 = 
+                "http://aca-app.comuf.com/affordableCareAct/js/preliminaryQuestions"
             
             ajaxRequest(targetUrl2,true,false);
             //ajaxRequest(targetUrl,false);
             
             $('#btnSubmit').on('click',nextQuestionGroup);
             $('#btnBack').on('click',previousQuestionGroup);
-            
             $('input').blur(function(e){
                 console.log('on Blur');
                 var question = reverselookup(this.attr('name'));
@@ -124,7 +125,7 @@
         });
         
         function ajaxRequest(targetUrl,printNow,advance){
-             var request = $.ajax({
+            var request = $.ajax({
                 url: targetUrl,
                 dataType: "json",
                 printNow : printNow,
@@ -132,6 +133,7 @@
             });
             
             request.done(function(data,success) {
+                console.log('ajax done');
                 $.each(data,function(key,value){
                     var param = {};
                     param.label = key;
@@ -194,7 +196,8 @@
             } else {
                 if (test){
                     //make a new ajax request
-                    ajaxRequest(targetUrl,false);
+                    console.log('LOOK AT ME');
+                    ajaxRequest(targetUrl,false,true);
                     test = false;
                     nextQuestionGroup();
                 }

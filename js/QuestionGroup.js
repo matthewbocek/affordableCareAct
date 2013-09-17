@@ -1,6 +1,8 @@
 function QuestionGroup(param){   
-    this.label = param.label;
+    this.label = param.name;
     this.meta = param.meta || '';
+    this.required = param.required || '';
+    this.multiple = '';
     this.questions = [];
     this.cssClass = param.cssClass || '';
     
