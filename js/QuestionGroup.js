@@ -1,4 +1,5 @@
 function QuestionGroup(param){   
+    console.log(param);
     this.label = param.name;
     this.meta = param.meta || '';
     this.required = param.required || '';
@@ -48,6 +49,7 @@ QuestionGroup.prototype.prepareReport = function(){
             this.saveAnswer();
             report[this.label] = this.savedAnswer;
     });
+    console.log('REPORT:')
     console.log(report);
     return report;
 }

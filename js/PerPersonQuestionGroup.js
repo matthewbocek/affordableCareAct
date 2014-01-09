@@ -1,5 +1,5 @@
-function PerPersonQuestionGroup(param,people){   
-    this.label = param.label;
+function PerPersonQuestionGroup(param,people){
+    this.label = param.name;
     this.meta = param.meta || '';
     this.questions = [];
     this.cssClass = param.cssClass + ' perPersonGroup' || 'perPersonGroup';
@@ -14,9 +14,17 @@ function PerPersonQuestionGroup(param,people){
     for(var i=0;i<param.questions.length;i++){
         this.questions.push( new PerPersonQuestion( param.questions[i] ) );
     }
+    
+    console.log('creating per person question group');
+  
+    //PerPersonQuestionGroup.prototype = new QuestionGroup(param);
+    //attempt:
+    QuestionGroup.call( this, param );
+    //console.log("Parent.call has worked!")
 }
 
-PerPersonQuestionGroup.prototype = new QuestionGroup(param);
+//attempt cont.:
+PerPersonQuestionGroup.prototype = Object.create( QuestionGroup.prototype );
 
 PerPersonQuestionGroup.prototype.print = function(people){
     var group = this;
@@ -24,10 +32,10 @@ PerPersonQuestionGroup.prototype.print = function(people){
 	content += '<div class="row-fluid" id="group-row-' + this.label + '">';
     content += '<div class="' + this.cssClass + '"  id="group-content-' + this.label + '"> ';
 
-    $.each(index,this.people){
+    $.each(this.people,function(index,value){ //Troubles ahoy
         content += '<div id="' + group.label + '-person-' + index + '">';
-        content += '<div>' + this + '</div>'
-        $.each(this.questions,function(){
+        content += '<div>' + value + '</div>'
+        $.each(group.questions,function(){
             content += this.print();
         });
     content += '</div>';

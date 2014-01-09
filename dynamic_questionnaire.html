@@ -89,10 +89,12 @@
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script src="js/Question.js"></script>
     <script src="js/QuestionGroup.js"></script>
+    <script src="js/PerPersonQuestion.js"></script>
+    <script src="js/PerPersonQuestionGroup.js"></script>
     
     <script>
         var questions,questionGroups,currentGroup,targetDiv,targetUrl,finalReport;
-        
+        var hostUrl = "http://www.tanyalsweeney.com/aca-test"
         var test = true;
         
         $(document).ready(function() {
@@ -102,12 +104,12 @@
             currentGroup = 0; //stores the index of this group in questionGroups
             //to access use questionGroups[]
             targetDiv = $('#questionnaire');
-            targetUrl = "http://aca-app.comuf.com/affordableCareAct/js/questionList.json"
+            targetUrl = hostUrl + "/js/questionList.json"
             
-            targetUrl2 = 
-                "http://aca-app.comuf.com/affordableCareAct/js/preliminaryQuestions"
-            
-            ajaxRequest(targetUrl2,true,false);
+            targetUrl2 = hostUrl + "js/preliminaryQuestions"
+                        
+            console.log('starting ajaxRequest');
+            ajaxRequest(targetUrl,true,false);
             //ajaxRequest(targetUrl,false);
             
             $('#btnSubmit').on('click',nextQuestionGroup);
@@ -136,12 +138,19 @@
                 console.log('ajax done');
                 $.each(data,function(key,value){
                     var param = {};
-                    param.label = key;
-                    param.questions = value;
-                    if (param.perPerson != true)
-                        questionGroups.push(new QuestionGroup( param ));
-                    else
+                    param = value;
+                    /*
+                    if (param.multiple == 'true')
                         questionGroups.push(new PerPersonQuestionGroup( param ));
+                    else
+                        questionGroups.push(new QuestionGroup( param ));
+                    */
+                    if (param.multiple != 'true') {
+                        questionGroups.push(new QuestionGroup( param ));
+                    } else {
+                        questionGroups.push(new PerPersonQuestionGroup( param ));
+                    }
+                    
                 });
                 
                 if(printNow){

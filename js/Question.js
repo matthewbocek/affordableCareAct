@@ -1,4 +1,4 @@
-function Question(param) {    
+function Question(param) {
     this.label = param.label;
 	
 	this.text = param.text;
@@ -59,7 +59,7 @@ Question.prototype.print = function() {
 
 Question.prototype.makeInputElement = function() {
     var content = '';
-    switch(this.inputType) {      
+    switch(this.inputType) {
         case 'select':
             content += '<select name="' + this.label + '">';
             $.each(this.answerOptions,function(){
@@ -70,8 +70,12 @@ Question.prototype.makeInputElement = function() {
         
         case 'radio':
         case 'checkbox':
-            for(var option in this.answerOptions) {
-                content += '<p><input type="' + this.inputType + '" name="' + this.label + '" value="' + this.option + '" /></p>';
+            if( typeof(this.answerOptions) === 'undefined' ) {
+                content += '<p><input type="' + this.inputType + '" name="' + this.label + '" value="placeholder" /></p>';
+            } else {
+                for(var option in this.answerOptions) {
+                    content += '<p><input type="' + this.inputType + '" name="' + this.label + '" value="' + this.option + '" /></p>';
+                }
             }
             break;
         

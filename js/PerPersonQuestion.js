@@ -13,6 +13,12 @@ function PerPersonQuestion(param){
     
     this.htmlInputs = null;
 	this.savedAnswer = {};
+    
+    //PerPersonQuestion.prototype = new Question(param);
+    Question.call( this, param );
+    //console.log("Parent.call has worked!")
 }
 
-PerPersonQuestion.prototype = new Question();
+//attempt cont.:
+PerPersonQuestion.prototype = Object.create( Question.prototype );
+
